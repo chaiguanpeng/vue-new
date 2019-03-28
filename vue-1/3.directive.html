@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <!-- v-if 如果不成立，dom就会消失 -->
+    <!-- v-if 控制的是 dom有没有  v-show 控制的是样式 显示还是隐藏-->
+    <!-- v-show 不支持template key不能放在template中-->
+
+    <!--1、内部会进行缓存 v-once 以后使用的都是缓存中的结果-->
+    <!--<p v-once>{{msg}}</p>-->
+    <!-- v-html 内部使用的是innerHTML, innerHTML会有XSS攻击，不能将用户输入的内容展现出来 内容必须为可以信任的-->
+    <!--<p v-html="d"></p>-->
+    <!--<input type="text" v-model="d">-->
+    <!--2、循环数组-->
+    <!--<div v-for="(fruit,index) in fruits" :key="index" :a="index">-->
+        <!--<div v-if="index%2">{{fruit}}</div>-->
+        <!--<div v-else>{{index}}</div>-->
+    <!--</div>-->
+    <!--3、循环对象-->
+    <!--<ul>-->
+        <!--<li v-for="(value,key) in info" :key="key">{{value}}</li>-->
+    <!--</ul>-->
+
+    <!-- v-if 如果不成立，dom就会消失 -->
+    <!-- v-if 控制的是 dom有没有  v-show 控制的是样式 显示还是隐藏-->
+    <!-- v-show 不支持template -->
+
+    <!-- 4、template是vue提供的无意义的标签 -->
+    <!--<template v-show="flag">-->
+        <!--<div>我是if</div>-->
+        <!--<div>我是第二个if</div>-->
+    <!--</template>-->
+    <!--<div>我是else</div>-->
+
+
+    <!-- 5、template使用 template中不能给key   单独测试，与上面有冲突-->
+    <!--<template v-for="i in 3">-->
+        <!--<div :key="i+'_1'" :a="i+'_1'">{{i}}</div>-->
+        <!--<div :key="`${i}_2`" :a="`${i}_2`">{{i}}</div>-->
+    <!--</template>-->
+
+    <!--6、key的展示   key可以用来区分元素 -->
+    <div v-if="flag">
+        <span>张三</span>
+        <input type="text" key="1">
+    </div>
+    <div v-else>
+        <span>架构</span>
+        <input type="text" key="2">
+    </div>
+
+    <!--7、尽量不要使用index作为key -->
+    <!-- 如果有唯一标识，尽量使用  数组倒序，key对应的值已经变化，所以会重新渲染,如果是给唯一的固定的值，只是移动，不会重新渲染-->
+    <ul>
+        <li key="1">1</li>
+        <li key="2">2</li>
+        <li key="3">3</li>
+    </ul>
+    <ul>
+        <li key="1">3</li>
+        <li key="2">2</li>
+        <li key="3">1</li>
+    </ul>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            msg:'hello',
+            d:'<h1>我是h1</h1>',
+            flag:true,
+            fruits:['🍌','🍎','🍐'],
+            info:{
+                name:'珠峰',
+                age:10,
+                address:'回龙观'
+            }
+        }
+    });
+</script>
+</body>
+</html>

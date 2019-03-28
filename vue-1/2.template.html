@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <!--取值表达式 可以 运算，取值(this都是指vm)，做三元   -->
+    {{1+4}}
+    {{this.msg}}
+    {{msg}}
+    {{flag?'ok':'no'}}
+    <!--函数必须有返回值-->
+    {{  (function(){return 100})()  }}
+    {{ {name:1} }}
+    {{'a'+'b'}}
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            msg:'hello',
+            flag:true
+        }
+    });
+    console.log(this);
+</script>
+</body>
+</html>

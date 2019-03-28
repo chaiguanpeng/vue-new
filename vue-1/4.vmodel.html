@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- 1、@input="fn" 不传参，methods中的fn第一个参数就是e; 2、@input="fn($event，1)" 传参数的话,如果是事件对象  为$event，参数就正常传-->
+<div id="app">
+    <!--两个效果一样 语法糖v-modal-->
+    <!--<input type="text" :value="msg" @input="fn($event,1)">-->
+    <!--<input type="text" :value="msg" @input="(e)=>{msg=e.target.value}">-->
+    <input type="text" v-model="msg">
+    {{msg}}
+
+
+    <!--select,radio,checkbox,textarea -->
+    <!--1、select中有multiple，多选， selectValue需要为数组 -->
+    <div>
+        <select v-model ="selectValue" >
+            <option value="0" disabled>请选择</option>
+            <option value="" v-for="(list,index) in lists" :key="list.id" :value="list.id">{{list.value}}</option>
+        </select>
+        {{selectValue}}
+    </div>
+    <!-- 2、radio  value与radioValue中的值相等，则选中-->
+    <div>
+        男性:<input type="radio" value="男" v-model="radioValue">
+        女性:<input type="radio" value="女" v-model="radioValue">
+        {{radioValue}}
+    </div>
+    <!--3、checkbox 选中就是true -->
+    <div>
+        <input type="checkbox" v-model="checkValue"> {{checkValue}}
+    </div>
+    <!--3.1 爱好 有多个的时候 就是数组-->
+    <div>
+        游泳:<input type="checkbox" v-model="checkValues" value="游泳">
+        健身:<input type="checkbox" v-model="checkValues" value="健身">
+        {{checkValues}}
+    </div>
+
+    <!--4、修饰符 (.number .trim=>去前空格)   input小坑   input的value值为string，如果要强制转bumber，用下面方法-->
+    <div>
+        <input type="text" v-model.number="val">{{typeof val}}
+    </div>
+    <!--4.1 键盘修饰符  鼠标修饰符 esc或者键盘码 13 是enter,常见.ctrl .esc .enter -->
+    <div>
+        <!--<input type="text" @keyup.esc="fn">-->
+        <input type="text" @keyup.13="fn">
+    </div>
+    <!-- 5、配置一个键盘code别名 一般用不到 -->
+    <div>
+        f1<input type="text" @keyup.f1="fn">
+    </div>
+
+
+    <!-- 属性绑定 v-bind:（简写:） class/style 两种形式 对象、 数组(数组中可以放对象)  -->
+    <div>
+        <!--对象形式-->
+        <p class="abc" :class="{b:true}">对象绑定样式</p>
+        <!--数组形式 -->
+        <p class="abc" :class="['a','b',c]">数组绑定样式</p>
+    </div>
+    <div>
+        <div style="color:red;fontSize:24px"  :style="{background:'blue'}">style1</div>
+        <div style="color:red;fontSize:24px"  :style="{background:'red',color:'blue'}">style1</div>
+    </div>
+
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<!--单向绑定: 单向数据变化 视图更新  双向绑定: 视图更新也会影响数据变化-->
+<!--方法不要放在data中，因为this会指向window 。  写在methods，不要使用箭头函数，因为this指向window。使用普通函数或者简写都可以 fn(){}-->
+<script>
+    // 5、配置一个键盘code别名 一般用不到(没啥用)
+    Vue.config.keyCodes = { //配置一个键盘code别名
+        'f1':112
+    };
+
+
+
+
+   // $mount 跟el是一样的
+    let vm = new Vue({
+        data:{ //存放数据
+            val:0,
+            msg:'hello',
+            selectValue:'',//默认一般为0,与option中value相对应 如果有multiple，此项默认为数组
+            lists:[{id:1,value:'菜单1'},{id:2,value:'菜单2'},{id:3,value:'菜单3'}],
+            radioValue:'男',
+            checkValue:true,
+            checkValues:[],
+            c:'d'
+        },
+        methods:{
+            fn(e,a){
+               this.msg = e.target.value;
+                console.log(a);
+                alert(1);
+            }
+        }
+    }).$mount('#app')
+</script>
+</body>
+</html>

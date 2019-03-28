@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="app">
+        {{info.address}}
+        {{arr}}
+    </div>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script>
+        // vm => viewModal
+        let vm = new Vue({
+            el:'#app',
+            // template:"<h1>hello world", 会把 div id="app" 全部换掉
+            data:{ //存放数据
+                msg:'hello',
+                info:{xxx:'xxx'},
+                arr:[1,2,3,4]
+            }
+        });
+        //1、对象应用在vue中
+        // vm.info.address = '新地址'   //此方式不能显示在视图中，因为info中并没有address属性
+
+        /* 此方式可以显示 跟上面做对比
+            vm.info = {
+                address : '回龙观'
+            };
+            vm.info.address = 'hello'
+        */
+        // vue提供了一个方法，可以给对象添加属性，并显示在视图中
+        // vm.$set(vm.info,'address','zfpx');
+
+        // 2、数组的应用
+        // vm.arr.length--;
+        // vm.arr.push(5);
+        // vm.arr = [2,4,6];
+
+
+
+        // vue实例上的方法 $el $options nextTick
+        vm.arr = [5,6,7];
+        vm.arr = [7,8,9]; //数据变化后更新视图操作是异步执行的，所以需要$nextTick等待dom加载完成后
+        console.log(vm.$el);
+        console.log(vm.$el.innerHTML);  //还是旧值
+        console.log(vm.$options);
+        vm.$nextTick(()=>{
+            console.log(vm.$el.innerHTML);  //还是旧值
+        })
+
+        /*多次改变info.xxx只会监控一次，会做缓存
+        vm.$watch('info.xxx',function (newValue, oldValue) {
+            console.log(newValue, oldValue);
+        })
+        vm.info.xxx = 'newValue';
+        vm.info.xxx = 'bbbb';
+        */
+    </script>
+</body>
+</html>
