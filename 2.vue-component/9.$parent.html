@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>手风琴效果-平级通信</title>
+</head>
+<body>
+<div id="app">
+    <collapse>
+        <!-- v-slot:hello 简写 #hello  -->
+        <template #hello>
+            <collapse-item title="react">内容1</collapse-item>
+            <collapse-item title="vue">内容2</collapse-item>
+            <collapse-item title="node">内容3</collapse-item>
+        </template>
+    </collapse>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    /*
+    * slot插槽中name属性默认名叫default
+    * 平级通信 $parent获取父组件实例 $children获取所有儿子
+    * */
+
+    //平级通信
+    Vue.component('Collapse',{
+        template:`<div class="wrap">
+                <slot name="hello"></slot>
+                </div>`,
+        methods:{
+            cut(childId){ //只要儿子点击了，我就知道当前点击的是谁
+                console.log(this.$children);
+                this.$children.forEach(child=>{
+                    if(child._uid !==childId){
+                        child.show = false
+                    }
+                })
+            }
+        }
+    });
+    //把内容1、内容2、内容3插到p标签中
+    Vue.component('CollapseItem',{
+        props:['title'],
+        data(){
+            return{
+                show:false
+            }
+        },
+        methods:{
+          change(){
+              console.log(this);
+              this.$parent.cut(this._uid);
+              this.show = !this.show
+          }
+        },
+        template:`<div>
+            <div :class="title" @click="change">{{title}}</div>
+            <p v-show="show">
+                 <slot></slot>
+            </p>
+        </div>`
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            content:'点我啊'
+        },
+        methods:{
+            change(){
+                alert('1')
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
+

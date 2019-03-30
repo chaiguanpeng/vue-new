@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>做校验</title>
+    </head>
+<body>
+<div id="app">
+    <my-button :msg="content" :a="1" b="2" :arr="[1,2,3]"></my-button>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+
+    let vm = new Vue({  //跟实例
+        el:'#app',
+        data:{
+            content:'点我啊'
+        },
+        components:{
+            'MyButton':{
+                props:{
+                    msg:{
+                        type:String,
+                        default:'点我啊'
+                    },
+                    a:{
+                        type: Number      //属性取出来的值都是字符串 a='1' a = 1(1都是字符串)  :a="1" :a=1（1是数子）
+                    },
+                    b:{
+                       type:String,
+                        validator(value){
+                            console.log(value);
+                            //返回true、false。 数据还是会显示，但是报错会显示
+                            return value>3
+                        }
+                    },
+                    arr:{
+                        type:Array,
+                        default: ()=>{  //属性校验中 对象或者数组要返回函数来返回默认值
+                            return [1,2]
+                        }
+                    }
+                },
+                template:`<button>{{msg}} {{a}} {{b}} {{arr}}</button> `,
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
+

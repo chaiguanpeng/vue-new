@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绑定函数</title>
+</head>
+<body>
+<div id="app">
+    <!--在父级中 绑定原生事件给组件 需要加.native  不加就认为是一个普通属性-->
+    <my-button @click.native="change" a="1"></my-button>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    /*
+    * 把事件绑定在button上
+    * */
+    let vm = new Vue({  //跟实例
+        el:'#app',
+        data:{
+            content:'点我啊'
+        },
+        methods:{
+          change(){
+              alert('1')
+          }
+        },
+        components:{
+            'MyButton':{
+                props:['a'],
+                template:`<div><button>点我啊{{a}}</button></div> ` //事件绑在div上，想绑定在button上
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
+

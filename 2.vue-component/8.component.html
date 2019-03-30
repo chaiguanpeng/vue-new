@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>子触发父亲的方法</title>
+</head>
+<body>
+<div id="app">
+   <!--儿子要调用父亲的方法 三种，看如下实例。其中第三种是批量的执行函数 点击和mouseup -->
+
+    <!--等同于 this.$on('click',change)-->
+    <my-button @click="change" a="1" @mouseup="change"></my-button>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    /*
+    * 把事件绑定在button上
+    * */
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            content:'点我啊'
+        },
+        methods:{
+            change(){
+                alert('1')
+            }
+        },
+        components:{
+            'MyButton':{
+                mounted(){ //v-bind = this.$attrs 绑定属性   v-on = this.$listeners  绑定方法
+                    console.log(this.$attrs);
+                    console.log(this.$listeners); //所有通过v-on传过来的属性
+                },
+                // inheritAttrs:false,
+                template:`<div>
+                            <button @click="$listeners.click()">点我啊</button>
+                            <button @click="$emit('click')">点我啊</button>
+                            <button v-on="$listeners">点我啊</button>
+                          </div> `
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
+

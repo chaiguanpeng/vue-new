@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>组件化</title>
+    </head>
+<body>
+<div id="app">
+
+    <my-button :msg="content" a="1" b="2"></my-button>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({  //跟实例
+        el:'#app',
+        data:{
+          content:'点我啊'
+        },
+        components:{
+            'MyButton':{
+                mounted(){
+                    //把属性保留在this.$attrs中
+                    console.log(this.$attrs);
+                },
+                inheritAttrs:false, //没有用到的数据 就不会显示在dom结构上
+                template:`<div>my-button <my v-bind="$attrs"></my> </div> `,
+                components: {
+                    'my':{
+                        props:['a','b'],
+                        template: `<span>{{a}}{{b}}</span>`
+                    }
+                }
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
+
