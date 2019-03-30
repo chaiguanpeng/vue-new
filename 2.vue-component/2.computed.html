@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全选按钮的计算</title>
+</head>
+<body>
+    <div id="app">
+        全选 <input type="checkbox" v-model="checkAll">
+
+        <div>
+            <input type="checkbox" v-for="(item,key) in checks" v-model="item.value">
+        </div>
+    </div>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                checks:[{value:true},{value:false},{value:true}]
+            },
+            computed:{
+                checkAll:{
+                    get(){
+                        return this.checks.every(item=>item.value)
+                    },
+                    set(value){  //双向绑定数据
+                        this.checks.forEach(check=>check.value = value);
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件化</title>
+</head>
+<body>
+<div id="app">
+   <my-button></my-button>
+    <!--单闭合标签只会渲染一个-->
+    <my-button />
+    <my-button />
+    <my-button />
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    /* 1、组件化优点 方便协作、方便维护、复用
+       2、组件定义方式2中 2.1 全局组件 2.2 局部组件
+       3、组件命名时候建议用大驼峰或者 my-button形式， Dom中使用肯定用 my-button，且是闭合双标签形式
+    */
+
+
+    //全局组件就是一个标签， 命名 大驼峰或者 -
+    // Vue.component('my-button',{
+    //     template:`<button>点我啊</button>`,
+    //     data(){ //必须是一个函数， 为了使数据互相不影响
+    //         return {
+    //             msg:'点我啊'
+    //         }
+    //
+    //     }
+    // });
+    let vm = new Vue({  //跟实例
+        el:'#app',
+        components:{
+            'MyButton':{
+                data(){
+                    return {msg:'点我'}
+                },
+                template:`<button>{{msg}}</button>`
+            }
+        }
+    });
+
+</script>
+</body>
+</html>

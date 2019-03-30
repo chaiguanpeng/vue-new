@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>全选按钮的计算</title>
+</head>
+<body>
+<div id="app">
+    {{a}} {{b}}
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    /* 1、mounted、beforeUpdate两个定时器比较常用
+       2、render在beforeMount和mounted中间
+       3、destroy方法使用的两种情况 3.1、路由切换，切换第二个路由销毁第一个路由  3.2、手动销毁
+    */
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            a:'1',
+            b:'2'
+        },
+        // beforeCreate(){ //用的方法较少 data数据拿不到,对数据不能操作
+        //     console.log('beforeCreate',this,this.$data);  // 初始化自己的生命周期 并且 绑定自己的事件
+        // },
+        created(){  //调用ajax，
+            console.log('created',this,this.$data,this.$el);  //可以获取数据,但是拿不到dom元素
+        },
+        beforeMount(){ //第一次调用渲染函数之前,一般不用 挂载之前
+            console.log('beforeMount');
+        },
+        mounted(){  //获取真实dom  因为页面已经渲染完了
+            console.log('mounted',this.$el);
+            this.a=100;
+            this.timer = setInterval(()=>{
+            })
+        },
+        beforeUpdate(){
+            this.b = 200;
+            console.log('beforeUpdate');
+        },
+        updated(){
+            // this.b = 300; //再这里改变数据会死循环，不要在这改数据
+            console.log('updated');
+        },
+        beforeDestroy(){
+            // 当前实例还可以用,一把在这清除定时器
+            console.log("beforeDestroy");
+            clearInterval(this.timer);
+        },
+        destroy(){
+            // 实例上的方法 监听都被移除掉. 1、路由切换，切换第二个路由销毁第一个路由  2、手动销毁
+            console.log('destroy');
+        }
+    });
+    // vm.$destroy 这也是手动销毁
+
+</script>
+</body>
+</html>

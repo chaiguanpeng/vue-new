@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- 在模板字符串中调用函数有个问题就是，当msg变化的时候，会触发getFullName函数的执行，(在浏览器vm.msg = 'x'来测试).但是我们并不希望出发次函数执行 -->
+    <div id="app">
+        {{msg}}
+        <!--{{getFullName()}}  函数缺点就是msg变化了，函数也会执行-->
+
+        <!--{{getFullName}}  计算属性走缓存-->
+
+        <!--watcher方法第一次渲染,值没变化，所以不执行 还需要加一个声明周期渲染次,代码量很多-->
+        {{fullName}}
+
+    </div>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <!--computed 和 method区别 有缓存和无缓存-->
+    <!--computed 和 watch区别  watch可以支持异步 computed里面不支持异步-->
+    <!--watch可以实现一些简单的功能 比如当数据变化请求数据， 优先用计算属性实现 -->
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                firstName:'柴',
+                lastName:'关鹏',
+                msg:'hello',
+                fullName:''
+            },
+            mounted(){ //页面渲染完成后调用
+                this.fullName = this.firstName + this.lastName
+            },
+            computed:{ //也是根据 Object.defineProperty实现的
+                getFullName(){   //类似get方法,有缓存  如果firstName或lastName值没有更改会从缓存中取值。
+                    return this.firstName + this.lastName
+                }
+            },
+            methods:{
+                getFullName(){
+                    console.log('哈哈');
+                    return this.firstName + this.lastName
+                }
+            },
+            watch:{ //这样写比较麻烦 就是vm.$watch('firstName',()=>{}) 是一样的
+                firstName:{ //这是全写 会调用handler方法
+                  handler(newValue){
+                      this.fullName = this.firstName + this.lastName
+                  },
+                  imediate:true
+                },
+                // firstName(){
+                //     this.fullName = this.firstName + this.lastName
+                // },
+                lastName(){
+                    this.fullName = this.firstName + this.lastName
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
