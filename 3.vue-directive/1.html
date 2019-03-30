@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <template v-for="i in 3">
+        <div ref="my">我是dom元素</div>
+    </template>
+    <hr>
+    <my-component ref="com"></my-component>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //ref不能给多个元素设置相同的ref 只识别一个
+    //如果遇到循环 就是多个元素 数组的形式
+    //ref放在组件中，this.$refs.com指的是组件实例
+    //如果给组件增加ref 那么可以获取组件的实例 调用组件实例上的方法 (常见的库通过这种方式暴露一些方法)
+    let vm = new Vue({
+        el:'#app',
+        data:{ //存放数据
+            msg:'hello'
+        },
+        mounted(){ //this.$refs.my是DOM元素
+            console.log(this.$refs);
+            console.log(this.$refs.com.show());
+        },
+        components:{
+            "myComponent":{
+                template:`<div>my-component</div>`,
+                methods:{
+                    show(){
+                        alert(1)
+                    }
+                }
+            }
+
+        }
+    });
+</script>
+</body>
+</html>
