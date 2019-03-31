@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-focus获取焦点指令</title>
+</head>
+<body>
+<div id="app">
+    <button @click="flag=!flag">显示</button>
+    <div v-if="flag">
+        <input type="text" v-focus>
+    </div>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //第一种实现
+    // Vue.directive('focus',{
+    //     bind(el,bindings,vnode){   //数据更新的时候走这个
+    //         console.log("bind");   //
+    //         Vue.nextTick(()=>{ //需要等到dom加载完成之后，所以使用inserted周期函数
+    //            el.focus();
+    //        })
+    //     }
+    // });
+
+    //第二种实现
+    Vue.directive('focus',{
+        inserted(el,bindings,vnode){
+            console.log("bind");
+                el.focus();    //这个时机会比bind晚一些  只有dom渲染完后执行
+        }
+    });
+    let vm = new Vue({
+        el:'#app',
+        data:{ //存放数据
+            msg:'a',
+            flag:true
+        }
+    });
+</script>
+</body>
+</html>

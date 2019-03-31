@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-focus获取焦点指令</title>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-focus>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //inserted 插入
+    Vue.directive('focus',{
+        bind(el,bindings,vnode){   //数据更新的时候走这个
+           Vue.nextTick(()=>{
+               el.focus();
+           })
+        }
+    });
+
+    let vm = new Vue({
+        el:'#app',
+        data:{ //存放数据
+            msg:'a'
+        }
+    });
+</script>
+</body>
+</html>

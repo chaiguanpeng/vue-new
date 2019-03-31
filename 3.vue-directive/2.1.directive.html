@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义指令限制input输入框的字数限制 （不借助v-model）</title>
+</head>
+<body>
+<div id="app">
+    <!--v-split.xxx 中xxx是修饰符 去固定2个动态的-->
+    <input type="text" v-split.2="msg">
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    //inserted 插入
+    Vue.directive('split',{
+        bind(el,bindings,vnode){
+            console.log("update");
+            let ctx = vnode.context;
+            let [,len] = bindings.rawName.split('.');
+            el.addEventListener('input',(e)=>{
+               let val =  e.target.value.slice(0,len); //输入框中的内容
+                ctx[bindings.expression] = val;
+                el.value = val;
+            });
+            //赋予默认值
+            el.value = ctx[bindings.expression];
+        },
+        update(el,bindings,vnode){ //数据更新的时候走这个。比如在控制台修改vm.msg时候
+            let ctx = vnode.context;
+            el.value = ctx[bindings.expression];
+        }
+    });
+
+    let vm = new Vue({
+        el:'#app',
+        data:{ //存放数据
+            msg:'a'
+        }
+    });
+</script>
+</body>
+</html>

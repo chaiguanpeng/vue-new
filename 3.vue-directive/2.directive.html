@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义指令限制input输入框的字数限制</title>
+</head>
+<body>
+<div id="app">
+    <!--v-split.xxx 中xxx是修饰符-->
+    <input type="text" v-model="msg" v-split.xxx="msg">
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    /*指令分为全局 、局部
+    * 1、指令放的是变量 例如msg
+    * 2、指令默认第二个函数形式 = update + bind
+    * 3、一般就只用函数就行
+    * */
+
+    //第一种实现
+    // Vue.directive('split',function (el,bindings,vnode) {
+    //     console.log(el, bindings, vnode);
+    //     //获取当前输入框所在的上下文
+    //     let ctx = vnode.context;
+    //     //取当前上下问中 获取 msg变量 把输入的内容截取前3个 放到msg中
+    //     let val = el.value.slice(0,3);
+    //     ctx[bindings.expression] = val;
+    // });
+    //第二种实现
+    Vue.directive('split',{
+        update(el,bindings,vnode){   //数据更新的时候走这个 即input中的change事件触发
+            console.log("update");
+            let ctx = vnode.context;
+            let val = el.value.slice(0,3);
+            ctx[bindings.expression] = val;
+        },
+        bind(el,bindings,vnode) { //只当用户绑定指令时生效
+            console.log(el, bindings, vnode);
+            //获取当前输入框所在的上下文
+            let ctx = vnode.context;
+            //取当前上下问中 获取 msg变量 把输入的内容截取前3个 放到msg中
+            let val = el.value.slice(0,3);
+            ctx[bindings.expression] = val;
+        }
+    });
+
+    let vm = new Vue({
+        el:'#app',
+        data:{ //存放数据
+            msg:'a'
+        }
+    });
+</script>
+</body>
+</html>
