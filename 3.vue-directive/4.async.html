@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过滤器</title>
+</head>
+<body>
+<div id="app">
+    <my-component></my-component>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    // 异步加载组件（这么使用意义不大，配合cli、webpack） - 配合webpack的懒加载使用
+    Vue.component('myComponent',function (resolve) {
+        setTimeout(()=>{
+            resolve({
+                template:`<h1>hello</h1>`
+            })
+        },5000)
+    });
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:'cgp'
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过滤器</title>
+</head>
+<body>
+<div id="app">
+    <p>{{newName}}</p>
+    <p>{{name | capitalize}}</p>
+    <!--可以传参-->
+    <p>{{name | capitalize(2)}}</p>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    // 过滤器只改变数据的展示形式 并不会改变原数据 （可以用computed代替.）
+    // 过滤器 也有全局 局部 ,过滤器的作用是为了复用
+    // 指令和过滤器函数中的this都是window
+    Vue.filter('capitalize',function (val,len) {
+        console.log("len",len);
+        console.log("val",val);
+        return val.slice(0,len).toUpperCase() + val.slice(len)
+    });
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:'cgp'
+        },
+        computed:{
+            newName(){
+                return this.name.slice(0,1).toUpperCase() + this.name.slice(1)
+            }
+        }
+    });
+</script>
+</body>
+</html>
