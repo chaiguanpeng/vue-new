@@ -11,22 +11,27 @@
             <li>
               <!-- 路由的写法 tag标签可以修改默认的a标签 -->
               <!--1、写法1 <router-link to="/home" tag="span">首页</router-link>-->
-              <router-link  :to="{name:'home'}">首页</router-link>
+              <!--2、写法2 <router-link  :to="{name:'home'}">首页</router-link>-->
+              <!--3、写法3 <router-link  :to="{path:'/home'}">首页</router-link>-->
+              <router-link  :to="{path:'/home'}">首页</router-link>
             </li>
             <li>
-              <router-link :to="{name:'profile'}">个人中心</router-link>
+              <router-link :to="{path:'/profile'}">个人中心</router-link>
             </li>
             <li>
-              <router-link :to="{name:'user'}">用户</router-link>
+              <router-link :to="{path:'/user'}">用户</router-link>
             </li>
             <li>
-              <router-link :to="{name:'login'}">登录</router-link>
+              <router-link :to="{path:'/login'}">登录</router-link>
             </li>
           </ul>
       </div>
     </div>
     <div class="container">
+        <!-- 首页可能需要3视图,给个默认路由 -->
       <router-view></router-view>
+      <router-view name="rename"></router-view>
+      <router-view name="version"></router-view>
     </div>
   </div>
 </template>
